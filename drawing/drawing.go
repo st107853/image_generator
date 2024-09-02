@@ -25,7 +25,7 @@ var DRAWINGS = map[string]generativeart.Engine{
 }
 
 func DrawMany(drawings map[string]generativeart.Engine) {
-	for k, _ := range drawings {
+	for k := range drawings {
 		DrawOne(k)
 	}
 }
@@ -45,7 +45,7 @@ func DrawOne(art string) string {
 	c.SetLineWidth(1.0)
 	c.SetLineColor(common.Orange)
 	c.Draw(DRAWINGS[art])
-	fileName := fmt.Sprintf("/home/katya/gone/image_generator/results/%s_%v.png", art, rand.Float64())
+	fileName := fmt.Sprintf("/tmp/results/%s_%v.png", art, rand.Float64())
 	c.ToPNG(fileName)
 	return fileName
 }
