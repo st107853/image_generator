@@ -2,48 +2,54 @@ package main
 
 import (
 	"fmt"
-	"log"
-	"net/http"
+	"image/color"
+	"math/rand/v2"
 
-	"github.com/gin-gonic/gin"
+	"github.com/jdxyw/generativeart"
+	"github.com/jdxyw/generativeart/arts"
+	"github.com/jdxyw/generativeart/common"
 )
 
-type Message struct {
-	//john tag to de-serialize json body
-	Name  string `json:"name"`
-	Email string `json: "email" binding:"required, email"`
-}
-
-func router() *gin.Engine {
-	r := gin.Default()
-	userRoute := r.Group("/user")
-	{
-		userRoute.GET("/hello/:name", func(c *gin.Context) {
-			user := c.Param("name")
-			response := fmt.Sprintf("hello, %s", user)
-			c.String(http.StatusOK, response)
-		})
-		userRoute.POST("/post", func(c *gin.Context) {
-			body := Message{}
-			if err := c.BindJSON(&body); err != nil {
-				c.AbortWithError(http.StatusBadRequest, err)
-				return
-			}
-			fmt.Println(body)
-			c.JSON(http.StatusAccepted, &body)
-		})
-		userRoute.POST("/upload", func(c *gin.Context) {
-			file, _ := c.FormFile("file")
-			log.Println(file.Filename)
-
-			c.SaveUploadedFile(file, "/tmp/tempfile")
-
-			c.String(http.StatusOK, fmt.Sprintf("'%s' uploaded!", file.Filename))
-		})
-	}
-	return r
+var DRAWINGS = map[string]generativeart.Engine{
+	"maze": arts.NewMaze(10),
+	"julia": arts.NewJulia(func(z complex128) complex128 {
+		return z*z +
+			complex(-0.1, 0.651)
+	}, 40, 1.5, 1.5),
+	"randcicle": arts.NewRandCicle(30, 80, 0.2, 2, 10, 30, true),
+	"blackhole": arts.NewBlackHole(200, 400, 0.01),
+	"janus":     arts.NewJanus(5, 10),
+	"random":    arts.NewRandomShape(150),
+	"silksky":   arts.NewSilkSky(15, 5),
+	"circles":   arts.NewColorCircle2(30),
 }
 
 func main() {
-	router().Run()
+	drawMany(DRAWINGS)
+}
+
+func drawMany(drawings map[string]generativeart.Engine) {
+	for k, _ := range drawings {
+		drawOne(k)
+	}
+}
+
+func drawOne(art string) string {
+	c := generativeart.NewCanva(600, 400)
+	c.SetColorSchema([]color.RGBA{
+		{0xCF, 0x2B, 0x34, 0xFF},
+		{0xF0, 0x8F, 0x46, 0xFF},
+		{0xF0, 0xC1, 0x29, 0xFF},
+		{0x19, 0x6E, 0x94, 0xFF},
+		{0x35, 0x3A, 0x57, 0xFF},
+	})
+
+	c.SetBackground(common.NavajoWhite)
+	c.FillBackground()
+	c.SetLineWidth(1.0)
+	c.SetLineColor(common.Orange)
+	c.Draw(DRAWINGS[art])
+	fileName := fmt.Sprintf("/tmp/%s_%d.png", art, rand.Float64())
+	c.ToPNG(fileName)
+	return fileName
 }
