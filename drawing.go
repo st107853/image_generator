@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"image/color"
-	"math/rand/v2"
+	"math/rand"
 
 	"github.com/jdxyw/generativeart"
 	"github.com/jdxyw/generativeart/arts"
@@ -17,11 +17,14 @@ var DRAWINGS = map[string]generativeart.Engine{
 			complex(-0.1, 0.651)
 	}, 40, 1.5, 1.5),
 	"randcicle": arts.NewRandCicle(30, 80, 0.2, 2, 10, 30, true),
-	"blackhole": arts.NewBlackHole(200, 400, 0.01),
-	"janus":     arts.NewJanus(5, 10),
+	"blackhole": arts.NewBlackHole(1300, 1600, 0.01),
+	"janus":     arts.NewJanus(4, 10),
 	"random":    arts.NewRandomShape(150),
-	"silksky":   arts.NewSilkSky(15, 5),
+	"silksky":   arts.NewSilkSky(5, 10),
 	"circles":   arts.NewColorCircle2(30),
+	"oceanfish": arts.NewOceanFish(100, 150),
+	"pixelhole": arts.NewPixelHole(200),
+	"silksmoke": arts.NewSilkSmoke(20, 10, 3, 10, 10, 100, true),
 }
 
 func DrawMany(drawings map[string]generativeart.Engine) {
@@ -33,19 +36,18 @@ func DrawMany(drawings map[string]generativeart.Engine) {
 func DrawOne(art string) string {
 	c := generativeart.NewCanva(600, 400)
 	c.SetColorSchema([]color.RGBA{
-		{0xCF, 0x2B, 0x34, 0xFF},
-		{0xF0, 0x8F, 0x46, 0xFF},
-		{0xF0, 0xC1, 0x29, 0xFF},
-		{0x19, 0x6E, 0x94, 0xFF},
-		{0x35, 0x3A, 0x57, 0xFF},
+		{22, 50, 91, 0xFF},
+		{34, 123, 148, 0xFF},
+		{120, 183, 208, 0xFF},
+		{255, 220, 127, 0xFF},
 	})
 
-	c.SetBackground(common.NavajoWhite)
+	c.SetBackground(common.LightGray)
 	c.FillBackground()
 	c.SetLineWidth(1.0)
-	c.SetLineColor(common.Orange)
+	c.SetLineColor(common.Moccasin)
 	c.Draw(DRAWINGS[art])
-	fileName := fmt.Sprintf("/tmp/results/%s_%v.png", art, rand.Float64())
+	fileName := fmt.Sprintf("./results/%s_%v.png", art, rand.Float64())
 	c.ToPNG(fileName)
 	return fileName
 }
