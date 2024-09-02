@@ -1,4 +1,4 @@
-module github.com/st107853/image_generator
+module github.com/st107853/image_generator/drawing
 go 1.23.0
 
 require (
