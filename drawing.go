@@ -16,15 +16,15 @@ var DRAWINGS = map[string]generativeart.Engine{
 		return z*z +
 			complex(-0.1, 0.651)
 	}, 40, 1.5, 1.5),
-	"randcicle": arts.NewRandCicle(30, 80, 0.2, 2, 10, 30, true),
-	"blackhole": arts.NewBlackHole(1300, 1600, 0.01),
+	"randcicle": arts.NewRandCicle(15, 20, 1, 5, 10, 40, true),
+	"blackhole": arts.NewBlackHole(500, 600, 0.01),
 	"janus":     arts.NewJanus(4, 10),
 	"random":    arts.NewRandomShape(150),
 	"silksky":   arts.NewSilkSky(5, 10),
 	"circles":   arts.NewColorCircle2(30),
 	"oceanfish": arts.NewOceanFish(100, 150),
 	"pixelhole": arts.NewPixelHole(200),
-	"silksmoke": arts.NewSilkSmoke(20, 10, 3, 10, 10, 100, true),
+	"silksmoke": arts.NewSilkSmoke(10, 20, 3, 20, 10, 80, true),
 }
 
 func DrawMany(drawings map[string]generativeart.Engine) {
@@ -34,7 +34,7 @@ func DrawMany(drawings map[string]generativeart.Engine) {
 }
 
 func DrawOne(art string) string {
-	c := generativeart.NewCanva(600, 400)
+	c := generativeart.NewCanva(400, 400)
 	c.SetColorSchema([]color.RGBA{
 		{22, 50, 91, 0xFF},
 		{34, 123, 148, 0xFF},

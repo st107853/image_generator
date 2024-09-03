@@ -1,0 +1,16 @@
+<body>
+  <img src="img/silksky.png" style="width: 100px;height:100px" alt="son of a bitch">
+  <nav class="navbar bg-body-tertiary">
+    <div class="container-fluid">
+      <span class="navbar-text">
+        Lets generate some images
+      </span>
+    </div>
+  </nav>
+
+  {{range .keys}}
+  <p><a href="/image/{{.}}">
+    <img src="img/{{.}}.png" style="width: 100px;height:100px" alt="son of a bitch">
+  </a></p>
+  {{end}}
+  </body>
