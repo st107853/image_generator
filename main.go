@@ -20,6 +20,11 @@ type jobData struct {
 	Generator string
 }
 
+type ImageAnswer struct {
+	Id  string `json:"id"`
+	URL string `json:"url"`
+}
+
 var sm sync.Map
 
 func (j *jobData) Bytes() []byte {
@@ -68,13 +73,16 @@ func router() *gin.Engine {
 
 			if ok {
 				fmt.Printf("Found %s for id: %s\n", path, id)
-				c.Header("Content-Type", "image/png")
+				c.Writer.Header().Set("Content-Type", "image/png")
 				c.File(fmt.Sprintf("%s", path))
+				c.Writer.WriteHeader(200)
+				//	fmt.Println(c.Header().Get("Content-Type"))
 			} else {
 				fmt.Printf("Path not found for id: %s\n", id)
-				c.Header("Content-Type", "image/jpg")
+				c.Writer.Header().Set("Content-Type", "image/jpg")
 				c.Header("Cache-Control", "no-cache")
-				c.File("static/loading.jpg")
+				c.File("img/loading.jpg")
+				c.Writer.WriteHeader(200)
 
 			}
 		})
@@ -86,8 +94,10 @@ func router() *gin.Engine {
 			Generator: generator,
 		}
 		q.Queue(&newJob)
-		res := map[string]string{"id": newJob.Id, "url": "http://" +
-			c.Request.Host + "/new/load/" + newJob.Id}
+		res := ImageAnswer{
+			Id:  newJob.Id,
+			URL: "http://" + c.Request.Host + "/new/load/" + newJob.Id,
+		}
 		c.JSON(200, res)
 	})
 
