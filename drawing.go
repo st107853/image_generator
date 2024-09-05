@@ -11,20 +11,18 @@ import (
 )
 
 var DRAWINGS = map[string]generativeart.Engine{
-	"maze": arts.NewMaze(10),
-	"julia": arts.NewJulia(func(z complex128) complex128 {
-		return z*z +
-			complex(-0.1, 0.651)
-	}, 40, 1.5, 1.5),
-	"randcicle": arts.NewRandCicle(15, 20, 1, 5, 10, 40, true),
-	"blackhole": arts.NewBlackHole(500, 600, 0.01),
-	"janus":     arts.NewJanus(4, 10),
-	"random":    arts.NewRandomShape(150),
-	"silksky":   arts.NewSilkSky(5, 10),
-	"circles":   arts.NewColorCircle2(30),
-	"oceanfish": arts.NewOceanFish(100, 150),
-	"pixelhole": arts.NewPixelHole(200),
-	"silksmoke": arts.NewSilkSmoke(10, 20, 3, 20, 10, 80, true),
+	"colorline":  arts.NewContourLine(400),
+	"circlegrid": arts.NewCircleGrid(4, 6),
+	"ciclemove":  arts.NewCircleMove(1000),
+	"blackhole":  arts.NewBlackHole(500, 600, 0.01),
+	"janus":      arts.NewJanus(4, 10),
+	"random":     arts.NewRandomShape(150),
+	"colorcanve": arts.NewColorCanve(5),
+	"circles":    arts.NewColorCircle2(7),
+	"oceanfish":  arts.NewOceanFish(100, 6),
+	"yarn":       arts.NewYarn(1000),
+	"silksmoke":  arts.NewSilkSmoke(10, 20, 3, 20, 10, 80, true),
+	"dotswave":   arts.NewDotsWave(400),
 }
 
 func DrawMany(drawings map[string]generativeart.Engine) {
@@ -44,7 +42,7 @@ func DrawOne(art string) string {
 
 	c.SetBackground(common.LightGray)
 	c.FillBackground()
-	c.SetLineWidth(1.0)
+	c.SetLineWidth(0.5)
 	c.SetLineColor(common.Moccasin)
 	c.Draw(DRAWINGS[art])
 	fileName := fmt.Sprintf("./results/%s_%v.png", art, rand.Float64())
